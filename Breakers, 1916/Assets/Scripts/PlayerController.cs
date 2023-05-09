@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-  public Camera myCamera;
-  public RectTransform bottomLeftCorner;
-  public RectTransform topRightCorner;
-
   public GameObject bulletPrefab;
   private Rigidbody2D playerRb;
   public float speed = 5.0f;
+  public float leftBorder;
+  public float rightBorder;
+  public float topBorder;
+  public float bottomBorder;
 
 
   private void StopPlayerPlaneVelocity(bool horizontal, bool vertical)
@@ -45,51 +45,28 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
       //Creates horizontal borders by applying velocity when player drifts away
-
-      Vector3 bottomLeftCornerInScene = myCamera.ScreenToWorldPoint(bottomLeftCorner.position - Vector3.forward*myCamera.transform.position.z);
-      Vector3 topRightCornerInScene = myCamera.ScreenToWorldPoint(topRightCorner.position - Vector3.forward*myCamera.transform.position.z);
-
-      if ( transform.position.x < bottomLeftCornerInScene.x )
+    if ( transform.position.x < leftBorder)
       {
         StopPlayerPlaneVelocity(true, false);
-        SetPlayerPlanePosition(bottomLeftCornerInScene.x, transform.position.y);
+        SetPlayerPlanePosition(leftBorder, transform.position.y);
       }
-      if ( transform.position.x > topRightCornerInScene.x )
+      if ( transform.position.x > rightBorder)
       {
         StopPlayerPlaneVelocity(true, false);
-        SetPlayerPlanePosition(topRightCornerInScene.x, transform.position.y);
+        SetPlayerPlanePosition(rightBorder, transform.position.y);
       }
 
-      if ( transform.position.y < bottomLeftCornerInScene.y )
+      if ( transform.position.y < bottomBorder)
       {
         StopPlayerPlaneVelocity(false, true);
-        SetPlayerPlanePosition(transform.position.x, bottomLeftCornerInScene.y);
+        SetPlayerPlanePosition(transform.position.x, bottomBorder);
       }
-      if ( transform.position.y > topRightCornerInScene.y )
+      if ( transform.position.y > topBorder)
       {
         StopPlayerPlaneVelocity(false, true);
-        SetPlayerPlanePosition(transform.position.x, topRightCornerInScene.y);
+        SetPlayerPlanePosition(transform.position.x, topBorder);
       }
 
-/*      if ( Mathf.Abs(transform.position.x) > 10 )
-       {
-         playerRb.velocity = Vector2.zero;
-         Vector2 position = transform.position;
-         position.x = 10 * Mathf.Sign(transform.position.x);
-         transform.position = position;
-       }
-
-       //Creates vertical borders by applying velocity when player drifts away
-
-       if ( Mathf.Abs(transform.position.y) > 30 )
-        {
-          playerRb.velocity = Vector2.zero;
-          Vector2 position = transform.position;
-          position.y = 30 * Mathf.Sign(transform.position.y);
-          transform.position = position;
-        }
-
-*/
 
       if (Input.GetKeyDown(KeyCode.Space))
       {
